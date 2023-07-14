@@ -1,6 +1,6 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+/* eslint-disable prettier/prettier */
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const PlayerControl = props => {
     const { playing, onPlay, onPause, skipForwards, skipBackwards } = props;
@@ -8,23 +8,27 @@ const PlayerControl = props => {
     return (
         <View style={styles.wrapper}>
             <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
-                <AntDesign name="banckward" size={25} color="#fff"/>
+                <Image
+                    source={require('../../assets/backward.png')} style={styles.icon} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.touchable} onPress={playing ? onPause : onPlay}>
                 {playing ? (
-                    <AntDesign name="pause" size={30} color="#fff"/>
+                    <Image
+                        source={require('../../assets/pause.png')} style={styles.pause} />
                 ) : (
-                    <AntDesign name="play" size={30} color="#fff" />
+                    <Image
+                        source={require('../../assets/play.png')} style={styles.image} />
                 )}
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
-                <AntDesign name="forward" size={25} color="#fff" />   
+                <Image
+                    source={require('../../assets/forward.png')} style={styles.icon} />
             </TouchableOpacity>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -38,6 +42,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         marginTop: 140,
+    },
+    icon: {
+        height: 20,
+        width: 20,
+    },
+    image: {
+        height: 30,
+        width: 30,
+    },
+    pause: {
+        height: 50,
+        width: 40,
     },
 });
 

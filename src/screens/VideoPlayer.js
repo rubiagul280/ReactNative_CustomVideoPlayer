@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect, createRef } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useState, useEffect, createRef } from 'react';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Image, StatusBar, Text } from 'react-native';
 import Video from 'react-native-video';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Orientation from 'react-native-orientation-locker';
 import PlayerControl from './PlayerControl';
 import ProgressBar from './ProgressBar';
@@ -17,6 +16,7 @@ const VideoPlayer = ({ uri }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
+  const [isPortrait, setIsPortrait] = useState(true);
 
   useEffect(() => {
     Orientation.addOrientationListener(handleOrientation);
@@ -36,7 +36,11 @@ const VideoPlayer = ({ uri }) => {
 
   const handleFullScreen = () => {
     if (fullScreen) {
-      Orientation.unlockAllOrientations();
+      if (isPortrait) {
+        Orientation.lockToPortrait();
+      } else {
+        Orientation.unlockAllOrientations();
+      }
     } else {
       Orientation.lockToLandscapeLeft();
     }
@@ -87,9 +91,11 @@ const VideoPlayer = ({ uri }) => {
     if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
       setFullScreen(true);
       StatusBar.setHidden(true);
+      setIsPortrait(false);
     } else {
       setFullScreen(false);
       StatusBar.setHidden(false);
+      setIsPortrait(true);
     }
   };
 
@@ -118,17 +124,21 @@ const VideoPlayer = ({ uri }) => {
           <View style={styles.controlOverlay}>
             <View style={styles.header}>
               <View style={styles.logoContainer}>
-                <Ionicons name="arrow-back" color="#fff" size={25} style={styles.icon} />
+                <Image
+                  source={require('../../assets/back-arrow.png')} style={styles.icon} />
                 <Image
                   source={require('../../assets/logo.png')}
                   style={styles.image}
                 />
               </View>
               <View style={styles.icons}>
-                <MaterialCommunityIcons name="arrow-right-top" color="#fff" size={25} style={styles.icon} />
-                <MaterialCommunityIcons name="cards-heart" color="red" size={25} style={styles.icon} />
-                <TouchableOpacity onPress={handleFullScreen} style={styles.fullScreenButton}>
-                  <MaterialCommunityIcons name="fullscreen" size={25} color="#fff" />
+              <Image
+                  source={require('../../assets/right-arrow.png')} style={styles.icon} />
+                <Image
+                  source={require('../../assets/like_icon.png')} style={styles.icon} />
+                <TouchableOpacity onPress={handleFullScreen}>
+                <Image
+                  source={require('../../assets/fullscreen.png')} style={styles.icon} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -175,6 +185,7 @@ const styles = StyleSheet.create({
   },
   fullScreenVideo: {
     width: 600,
+    height: 500,
   },
   fullScreenButton: {
     alignSelf: 'flex-end',
@@ -198,12 +209,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-around',
-    marginTop: 30,
+    marginTop: 45,
   },
   image: {
     height: 25,
     width: 60,
-    marginLeft: 90,
+    marginLeft: 100,
   },
   icons: {
     flexDirection: 'row',
@@ -217,6 +228,8 @@ const styles = StyleSheet.create({
     marginTop: 1,
     marginRight: 5,
     marginLeft: 5,
+    height: 15,
+    width: 15,
   },
   txt: {
     fontSize: 9,

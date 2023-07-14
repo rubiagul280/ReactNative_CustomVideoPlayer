@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -10,21 +11,21 @@ const ProgressBar = props => {
         const seconds = Math.floor(time - minutes * 60);
 
         return `${minutes >= 10 ? minutes : '0' + minutes} : ${seconds >= 10 ? seconds : '0' + seconds}`;
-    }
+    };
 
     const position = getMinutesFromSeconds(currentTime);
     const fullDuration = getMinutesFromSeconds(duration);
 
     const handleOnSlide = time => {
         onSlideCapture({seekTime : time});
-    }
+    };
 
     return (
         <View style={styles.progressBarContainer}>
             <Slider height={10}
                 value={currentTime}
                 minimumValue={0}
-                maximumValue={150}
+                maximumValue={30}
                 step={1}
                 onValueChange={handleOnSlide}
                 onSlidingStart={onSlideStart}
@@ -53,11 +54,11 @@ const styles = StyleSheet.create({
 
     },
     timeLeft: {
-        color: '#fff'
+        color: '#fff',
     },
     timeRight: {
         color: '#fff',
-    }
+    },
 });
 
 export default ProgressBar;
